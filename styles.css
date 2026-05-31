@@ -309,13 +309,14 @@ input[type="range"] {
   place-items: center;
   min-height: 88px;
   overflow: hidden;
-  border: 1px dashed rgba(81, 72, 56, 0.24);
+  border: 1px dashed transparent;
   border-radius: var(--radius);
   background:
     linear-gradient(135deg, rgba(81, 72, 56, 0.03) 25%, transparent 25%) 0 0 /
       16px 16px,
     var(--card);
   color: var(--muted-foreground);
+  cursor: pointer;
   text-align: center;
   transition:
     border-color 160ms ease,
@@ -323,16 +324,31 @@ input[type="range"] {
     transform 160ms ease;
 }
 
+.upload-cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border: 1px dashed rgba(81, 72, 56, 0.24);
+  border-radius: inherit;
+}
+
 .upload-cell:hover,
 .upload-cell.is-dragging {
-  border-color: rgba(197, 115, 63, 0.7);
   background-color: #fff9e5;
-  transform: translateY(-1px);
+}
+
+.upload-cell:hover::after,
+.upload-cell.is-dragging::after {
+  border-color: rgba(197, 115, 63, 0.7);
 }
 
 .upload-cell input {
   position: absolute;
   inset: 0;
+  z-index: 2;
+  cursor: pointer;
   opacity: 0;
 }
 
@@ -363,7 +379,7 @@ input[type="range"] {
   position: absolute;
   top: 8px;
   right: 8px;
-  z-index: 2;
+  z-index: 3;
   display: none;
   width: 30px;
   min-height: 30px;
