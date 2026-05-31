@@ -42,7 +42,7 @@
   };
 
   const exportConfig = {
-    naturalRowHeight: 640,
+    fallbackRowHeight: 640,
     naturalColWidth: 900,
     gridCellWidth: 420,
     gridCellHeight: 420,
@@ -204,12 +204,21 @@
     reader.readAsDataURL(file);
   }
 
-  function dimensionsForImage(imageData, mode) {
+  function getRowTargetHeight() {
+    const uploadedHeights = state.images
+      .filter(Boolean)
+      .map((imageData) => imageData.height);
+    return uploadedHeights.length
+      ? Math.min(...uploadedHeights)
+      : exportConfig.fallbackRowHeight;
+  }
+
+  function dimensionsForImage(imageData, mode, targetSize) {
     if (!imageData) {
       if (mode === "row") {
         return {
-          width: Math.round(exportConfig.naturalRowHeight * exportConfig.emptyRatio),
-          height: exportConfig.naturalRowHeight,
+          width: Math.round(targetSize * exportConfig.emptyRatio),
+          height: targetSize,
         };
       }
       return {
@@ -221,9 +230,9 @@
     if (mode === "row") {
       return {
         width: Math.round(
-          (imageData.width * exportConfig.naturalRowHeight) / imageData.height
+          (imageData.width * targetSize) / imageData.height
         ),
-        height: exportConfig.naturalRowHeight,
+        height: targetSize,
       };
     }
 
@@ -238,12 +247,15 @@
   function computeCanvasSize() {
     const gap = state.gap;
     if (state.rows === 1) {
-      const parts = state.images.map((item) => dimensionsForImage(item, "row"));
+      const targetHeight = getRowTargetHeight();
+      const parts = state.images.map((item) =>
+        dimensionsForImage(item, "row", targetHeight)
+      );
       return {
         width:
           parts.reduce((sum, item) => sum + item.width, 0) +
           Math.max(0, parts.length - 1) * gap,
-        height: exportConfig.naturalRowHeight,
+        height: targetHeight,
         parts,
       };
     }
