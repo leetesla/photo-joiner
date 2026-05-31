@@ -119,9 +119,19 @@
   function renderUploadGrid() {
     uploadGrid.innerHTML = "";
     uploadGrid.style.setProperty("--upload-cols", state.cols);
+    uploadGrid.classList.toggle("is-single-col", state.cols === 1);
     uploadTitle.textContent = `${state.rows} 行 x ${state.cols} 列`;
 
     state.images.forEach((imageData, index) => {
+      const rowIndex = Math.floor(index / state.cols);
+      let rowEl = uploadGrid.querySelector(`[data-row="${rowIndex}"]`);
+      if (!rowEl) {
+        rowEl = document.createElement("div");
+        rowEl.className = "upload-row";
+        rowEl.dataset.row = rowIndex;
+        uploadGrid.appendChild(rowEl);
+      }
+
       const cell = document.createElement("label");
       cell.className = `upload-cell${imageData ? " has-image" : ""}`;
 
@@ -179,7 +189,7 @@
       });
 
       cell.append(remove, input);
-      uploadGrid.appendChild(cell);
+      rowEl.appendChild(cell);
     });
 
     const filled = state.images.filter(Boolean).length;

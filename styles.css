@@ -294,8 +294,6 @@ input[type="range"] {
 
 .upload-grid {
   display: grid;
-  grid-template-columns: repeat(var(--upload-cols, 2), minmax(86px, 120px));
-  justify-content: start;
   gap: 10px;
   margin-top: 14px;
   max-height: 260px;
@@ -303,10 +301,19 @@ input[type="range"] {
   padding-right: 2px;
 }
 
+.upload-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: max-content;
+}
+
 .upload-cell {
   position: relative;
+  flex: 0 0 120px;
   display: grid;
   place-items: center;
+  width: 120px;
   min-height: 88px;
   overflow: hidden;
   border: 1px dashed transparent;
@@ -322,6 +329,18 @@ input[type="range"] {
     border-color 160ms ease,
     background 160ms ease,
     transform 160ms ease;
+}
+
+.upload-cell:not(.has-image) {
+  flex-basis: 250px;
+  width: 250px;
+  min-height: 0;
+  aspect-ratio: 1;
+}
+
+.upload-grid.is-single-col .upload-cell:not(.has-image) {
+  flex-basis: 240px;
+  width: 240px;
 }
 
 .upload-cell::after {
@@ -465,6 +484,10 @@ canvas {
 
   .upload-grid {
     max-height: 220px;
-    grid-template-columns: repeat(var(--upload-cols, 2), minmax(0, 1fr));
+  }
+
+  .upload-row {
+    min-width: 0;
+    overflow-x: auto;
   }
 }
