@@ -60,6 +60,7 @@
   const gapSize = document.querySelector("#gapSize");
   const gapOutput = document.querySelector("#gapOutput");
   const downloadBtn = document.querySelector("#downloadBtn");
+  const downloadJpegBtn = document.querySelector("#downloadJpegBtn");
   const clearAll = document.querySelector("#clearAll");
 
   function templateLabel(rows, cols) {
@@ -393,11 +394,12 @@
     });
   }
 
-  function downloadCanvas() {
+  function downloadCanvas(type) {
     const link = document.createElement("a");
     const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
-    link.download = `photo-join-${timestamp}.png`;
-    link.href = canvas.toDataURL("image/png");
+    const isJpeg = type === "jpeg";
+    link.download = `photo-join-${timestamp}.${isJpeg ? "jpg" : "png"}`;
+    link.href = canvas.toDataURL(isJpeg ? "image/jpeg" : "image/png", 0.92);
     link.click();
   }
 
@@ -419,7 +421,8 @@
     renderCanvas();
   });
 
-  downloadBtn.addEventListener("click", downloadCanvas);
+  downloadBtn.addEventListener("click", () => downloadCanvas("png"));
+  downloadJpegBtn.addEventListener("click", () => downloadCanvas("jpeg"));
 
   clearAll.addEventListener("click", () => {
     state.images = state.images.map(() => null);
