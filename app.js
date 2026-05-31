@@ -117,7 +117,7 @@
 
   function renderUploadGrid() {
     uploadGrid.innerHTML = "";
-    uploadGrid.style.gridTemplateColumns = `repeat(${state.cols}, minmax(0, 1fr))`;
+    uploadGrid.style.setProperty("--upload-cols", state.cols);
     uploadTitle.textContent = `${state.rows} 行 x ${state.cols} 列`;
 
     state.images.forEach((imageData, index) => {
