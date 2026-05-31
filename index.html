@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>照片拼接工具</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <strong>照片拼接</strong>
+          <span>本地处理 · Canvas 导出</span>
+        </div>
+      </div>
+      <button class="ghost-button" id="clearAll" type="button">清空</button>
+    </header>
+
+    <main class="app-shell">
+      <section class="panel controls-panel" aria-label="拼接设置">
+        <div class="section-heading">
+          <p>模板</p>
+          <h1>选择拼接方式</h1>
+        </div>
+
+        <div class="template-groups" id="templateGroups"></div>
+
+        <div class="setting-row">
+          <label for="gridFit">宫格图片适配</label>
+          <select id="gridFit">
+            <option value="cover">填满裁切</option>
+            <option value="contain">完整显示</option>
+          </select>
+        </div>
+
+        <div class="setting-row">
+          <label for="gapSize">图片间距</label>
+          <input id="gapSize" type="range" min="0" max="32" step="2" value="0" />
+          <output id="gapOutput">0px</output>
+        </div>
+
+        <button class="primary-button" id="downloadBtn" type="button">
+          下载 PNG
+        </button>
+      </section>
+
+      <section class="workspace" aria-label="拼接工作区">
+        <div class="panel upload-panel">
+          <div class="panel-title">
+            <div>
+              <p>上传</p>
+              <h2 id="uploadTitle">1 行 x 2 列</h2>
+            </div>
+            <span id="filledCount">0 / 2</span>
+          </div>
+          <div class="upload-grid" id="uploadGrid"></div>
+        </div>
+
+        <div class="preview-wrap">
+          <div class="preview-head">
+            <div>
+              <p>预览</p>
+              <h2>导出效果</h2>
+            </div>
+            <span id="canvasSize">0 x 0</span>
+          </div>
+          <div class="canvas-frame">
+            <canvas id="previewCanvas"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
